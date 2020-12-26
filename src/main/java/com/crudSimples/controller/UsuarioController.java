@@ -5,12 +5,10 @@ import com.crudSimples.service.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigInteger;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -31,6 +29,44 @@ public class UsuarioController {
             return ResponseEntity.ok(usuarioEntity);
         }catch (Exception ee) {
             log.debug("Erro durante o Salvamento do novo usuario.");
+            return ResponseEntity.badRequest().body(ee.getMessage());
+        }
+    }
+
+    @GetMapping(path = "/{idUsuario}",produces = "application/json")
+    public ResponseEntity buscarUsuarioPorId(@PathVariable("idUsuario") BigInteger idUsuario) {
+
+        try {
+            UsuarioEntity usuarioEntity = usuarioService.buscarPorId( idUsuario );
+
+            return ResponseEntity.ok(usuarioEntity);
+        }catch (Exception ee) {
+            return ResponseEntity.badRequest().body(ee.getMessage());
+        }
+    }
+
+    @DeleteMapping(path = "/{idUsuario}",produces = "application/json")
+    public ResponseEntity deletarPorId(@PathVariable("idUsuario") BigInteger idUsuario) {
+
+        try {
+            usuarioService.delete( idUsuario );
+
+            return ResponseEntity.ok(null);
+        }catch (Exception ee) {
+            return ResponseEntity.badRequest().body(ee.getMessage());
+        }
+    }
+
+    @PutMapping(path = "",produces = "application/json")
+    public ResponseEntity editarUsuario(@Valid @RequestBody UsuarioEntity usuarioEntity) {
+
+        log.debug("Iniciando Método.");
+
+        try {
+            usuarioService.editar( usuarioEntity );
+
+            return ResponseEntity.ok(usuarioEntity);
+        }catch (Exception ee) {
             return ResponseEntity.badRequest().body(ee.getMessage());
         }
     }

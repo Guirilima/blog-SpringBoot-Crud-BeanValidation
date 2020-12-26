@@ -6,6 +6,10 @@ import com.crudSimples.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.math.BigInteger;
+import java.util.Optional;
+
 import static java.util.Objects.nonNull;
 
 @Service
@@ -32,6 +36,30 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new RuntimeException(ee.getMessage());
             //Afim de ensinamento.
         }
+    }
+
+    @Override
+    public void delete(BigInteger idUsuario) {
+        this.buscarPorId(idUsuario);
+        this.usuarioRepository.deleteById(idUsuario);
+    }
+
+    @Override
+    @Transactional
+    public UsuarioEntity editar(UsuarioEntity usuarioEntity) {
+
+        return this.usuarioRepository.save(usuarioEntity);
+
+    }
+
+    @Override
+    public UsuarioEntity buscarPorId(BigInteger idUsuario) {
+        Optional
+                .ofNullable(idUsuario)//ArgumentNotValidException
+                .orElseThrow(() -> new RuntimeException("Id não pode ser nulo") );
+
+        return this.usuarioRepository.findById(idUsuario)
+                .orElseThrow( () -> new  RuntimeException("Cliente de id " + idUsuario + " não encontrado"));
     }
 
 }
