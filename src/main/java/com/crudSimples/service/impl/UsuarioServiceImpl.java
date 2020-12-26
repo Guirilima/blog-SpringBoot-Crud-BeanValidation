@@ -29,7 +29,8 @@ public class UsuarioServiceImpl implements UsuarioService {
             return usuarioRepository.save(usuarioEntity);
 
         }catch (Exception ee) {
-            throw new RuntimeException("Erro durante o salvamento dos dados.");
+            throw new RuntimeException(ee.getMessage());
+            //Afim de ensinamento.
         }
     }
 

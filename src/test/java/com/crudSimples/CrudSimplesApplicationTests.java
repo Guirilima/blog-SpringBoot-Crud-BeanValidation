@@ -1,9 +1,7 @@
 package com.crudSimples;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.Test;
 
-@SpringBootTest
 class CrudSimplesApplicationTests {
 
 	@Test
