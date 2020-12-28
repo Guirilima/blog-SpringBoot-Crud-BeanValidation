@@ -8,12 +8,12 @@ import java.math.BigInteger;
 @Service
 public interface UsuarioService {
 
-    public UsuarioEntity criar(UsuarioEntity usuarioEntity);
+    public UsuarioEntity criar(UsuarioEntity usuarioEntity) throws Exception;
 
-    public void delete(BigInteger idUsuario);
+    public void delete(BigInteger idUsuario) throws Exception;
 
     public UsuarioEntity editar(UsuarioEntity usuarioEntity);
 
-    public UsuarioEntity buscarPorId(BigInteger idUsuario);
+    public UsuarioEntity buscarPorId(BigInteger idUsuario) throws Exception;
 
 }

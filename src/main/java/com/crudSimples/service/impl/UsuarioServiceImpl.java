@@ -19,27 +19,27 @@ public class UsuarioServiceImpl implements UsuarioService {
     UsuarioRepository usuarioRepository;
 
     @Override
-    public UsuarioEntity criar(UsuarioEntity usuarioEntity) {
+    public UsuarioEntity criar(UsuarioEntity usuarioEntity) throws Exception {
 
         try {
 
             if ( nonNull( usuarioRepository.findTop1ByCpf(usuarioEntity.getCpf()) ) ) {
-                throw new RuntimeException("O Cpf inserido ja pertence a outro usuário.");
+                throw new Exception("O Cpf inserido ja pertence a outro usuário.");
             }
             if ( nonNull( usuarioRepository.findTop1ByEmail( usuarioEntity.getEmail()) )) {
-                throw new RuntimeException("O E-mail inserido ja pertence a outro usuário.");
+                throw new Exception("O E-mail inserido ja pertence a outro usuário.");
             }
 
             return usuarioRepository.save(usuarioEntity);
 
         }catch (Exception ee) {
-            throw new RuntimeException(ee.getMessage());
-            //Afim de ensinamento.
+            throw new Exception(ee.getMessage());
+            //Recomendado a criação de uma Exception personalizada.
         }
     }
 
     @Override
-    public void delete(BigInteger idUsuario) {
+    public void delete(BigInteger idUsuario) throws Exception {
         this.buscarPorId(idUsuario);
         this.usuarioRepository.deleteById(idUsuario);
     }
@@ -53,13 +53,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioEntity buscarPorId(BigInteger idUsuario) {
+    public UsuarioEntity buscarPorId(BigInteger idUsuario) throws Exception {
         Optional
                 .ofNullable(idUsuario)//ArgumentNotValidException
-                .orElseThrow(() -> new RuntimeException("Id não pode ser nulo") );
+                .orElseThrow(() -> new Exception("Id não pode ser nulo") );
 
         return this.usuarioRepository.findById(idUsuario)
-                .orElseThrow( () -> new  RuntimeException("Cliente de id " + idUsuario + " não encontrado"));
+                .orElseThrow( () -> new  Exception("Cliente de id " + idUsuario + " não encontrado"));
     }
 
 }
